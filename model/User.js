@@ -1,0 +1,200 @@
+const User = require('../dao/DaoUser');
+const passwordHash = require("password-hash");
+
+function signup(req, res) {
+    if (!req.body.email || !req.body.password) {
+        //Le cas où l'email ou bien le password ne serait pas soumit ou nul
+        res.status(400).json({
+            "text": "Requête invalide"
+        })
+    } else {
+        var user = {
+            email: req.body.email,
+            password: passwordHash.generate(req.body.password)
+        }
+        var findUser = new Promise(function (resolve, reject) {
+            User.findOne({
+                email: user.email
+            }, function (err, result) {
+                if (err) {
+                    reject(500);
+                } else {
+                    if (result) {
+                        reject(204)
+                    } else {
+                        resolve(true)
+                    }
+                }
+            })
+        })
+
+        findUser.then(function () {
+            var _u = new User(user);
+            _u.save(function (err, user) {
+                if (err) {
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+                } else {
+                    res.status(200).json({
+                        "text": "Succès",
+                        "token": user.getToken(),
+                        "id":user._id,
+                    })
+                }
+            })
+        }, function (error) {
+            switch (error) {
+                case 500:
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+                    break;
+                case 204:
+                    res.status(204).json({
+                        "text": "L'adresse email existe déjà"
+                    })
+                    break;
+                default:
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+            }
+        })
+    }
+}
+
+function login(req, res) {
+    if (!req.body.email || !req.body.password) {
+        //Le cas où l'email ou bien le password ne serait pas soumit ou nul
+        res.status(400).json({
+            "text": "Requête invalide"
+        })
+    } else {
+        User.findOne({
+            email: req.body.email
+        }, function (err, user) {
+            if (err) {
+                res.status(500).json({
+                    "text": "Erreur interne"
+                })
+            } else if (!user) {
+                res.status(401).json({
+                    "text": "L'utilisateur n'existe pas"
+                })
+            } else {
+                if (user.authenticate(req.body.password)) {
+                    res.status(200).json({
+                        "token": user.getToken(),
+                        "text": "Authentification réussi",
+                        "id":user._id,
+                    })
+                } else {
+                    res.status(401).json({
+                        "text": "Mot de passe incorrect"
+                    })
+                }
+            }
+        })
+    }
+}
+
+function update(req,res){
+
+   
+    if (!req.body.email) {
+        //Le cas où l'email ou bien le password ne serait pas soumit ou nul
+        res.status(400).json({
+            "text": "Requête invalide"
+        })
+    } else {
+        var user = {
+            email: req.body.email,
+            password: req.body.password,//passwordHash.generate(req.body.password),
+            passwordgetaccept:req.body.passwordgetaccept, 
+            prenom:req.body.prenom
+        }
+
+       
+
+        var updateUser = new Promise(function (resolve, reject) {
+
+            console.log("req.body.id")
+            User.findById(
+                
+                new mongoose.Types.ObjectId(req.body.id)
+
+            , function (err, result) {
+                if (err) {
+                    reject(500);
+                } else {
+                  
+                  resolve(result)
+                }
+            })
+        })
+  
+        updateUser.then(function (result) {
+            console.log(req.body.apassword)
+            console.log(result.password)
+         
+            if(result.password===req.body.apassword){
+
+    
+                        User.findByIdAndUpdate( new mongoose.Types.ObjectId(req.body.id), req.body,function (err, user) {
+                            if (err) {
+                                res.status(500).json({
+                                    "text": "Erreur interne"
+                                })
+
+                            } else {
+                                console.log("----------------------------------entréeeeee");
+                                res.status(200).json({
+                                    "text": "Succès"
+                                })
+                            }
+                        })
+                    
+
+        
+
+            }else{
+
+                res.status(500).json({
+                    "text": "mot de passe ne concorde pas"
+                })
+
+            }
+
+
+
+        }, function (error) {
+  
+            switch (error) {
+                case 500:
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+                    break;
+                case 204:
+                    res.status(204).json({
+                        "text": "L'adresse email existe déjà"
+                    })
+                    break;
+                default:
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+            }
+        })
+    
+
+
+    }
+
+}
+
+//On exporte nos deux fonctions
+
+exports.login = login;
+exports.signup = signup;
