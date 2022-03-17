@@ -18,22 +18,24 @@ mongoose.connect(config.CURRENT_BD_PATH).then(() => {
   console.log(e);
 });
 
-app.use(express.static(path.join(__dirname, 'public')))
-  .get('/', (req, res) => res.send(" Real time POS3 web app running."))
-
-  //On définit notre objet express nommé app
-app.use(bodyParser.urlencoded({parameterLimit: 10000, limit: '50mb', extended: true }));
-app.use(bodyParser.json({parameterLimit: 10000, limit: '50mb'}));
-
-
   //Définition des CORS
 app.use(function (req, res, next) {
+  res.setHeader('Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Credentials', true);
   next();
 });
+app.use(express.static(path.join(__dirname, 'public')))
+  .get('/', (req, res) => res.send(" debut du boulot."))
+
+  //On définit notre objet express nommé app
+app.use(bodyParser.urlencoded({parameterLimit: 10000, limit: '50mb', extended: true }));
+app.use(bodyParser.json({parameterLimit: 10000, limit: '50mb'}));
+
+
+
 
 
 

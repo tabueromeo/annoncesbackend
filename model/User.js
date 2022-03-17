@@ -1,20 +1,27 @@
 const User = require('../dao/DaoUser');
 const passwordHash = require("password-hash");
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+
+// get config vars
+dotenv.config();
+
+
 
 function signup(req, res) {
-    if (!req.body.email || !req.body.password) {
+    if (!req.body.telephone || !req.body.password) {
         //Le cas où l'email ou bien le password ne serait pas soumit ou nul
         res.status(400).json({
             "text": "Requête invalide"
         })
     } else {
         var user = {
-            email: req.body.email,
+            telephone: req.body.telephone,
             password: passwordHash.generate(req.body.password)
         }
         var findUser = new Promise(function (resolve, reject) {
             User.findOne({
-                email: user.email
+                telephone: user.telephone
             }, function (err, result) {
                 if (err) {
                     reject(500);
@@ -36,10 +43,11 @@ function signup(req, res) {
                         "text": "Erreur interne"
                     })
                 } else {
+                   let token = jwt.sign({"telephone":user.telephone,"_id":user._id}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+                    
                     res.status(200).json({
                         "text": "Succès",
-                        "token": user.getToken(),
-                        "id":user._id,
+                        "token": token,
                     })
                 }
             })
@@ -52,7 +60,7 @@ function signup(req, res) {
                     break;
                 case 204:
                     res.status(204).json({
-                        "text": "L'adresse email existe déjà"
+                        "text": "Le numéro existe déjà"
                     })
                     break;
                 default:
@@ -65,54 +73,73 @@ function signup(req, res) {
 }
 
 function login(req, res) {
-    if (!req.body.email || !req.body.password) {
-        //Le cas où l'email ou bien le password ne serait pas soumit ou nul
-        res.status(400).json({
-            "text": "Requête invalide"
-        })
-    } else {
-        User.findOne({
-            email: req.body.email
-        }, function (err, user) {
-            if (err) {
-                res.status(500).json({
-                    "text": "Erreur interne"
-                })
-            } else if (!user) {
-                res.status(401).json({
-                    "text": "L'utilisateur n'existe pas"
-                })
-            } else {
-                if (user.authenticate(req.body.password)) {
-                    res.status(200).json({
-                        "token": user.getToken(),
-                        "text": "Authentification réussi",
-                        "id":user._id,
+    
+  
+     const authHeader = req.headers['authorization']
+     const token = authHeader && authHeader.split(' ')[1]
+  
+  if (token == null) {
+      
+           if (!req.body.telephone || !req.body.password) {
+             return res.status(401).json("requete invalide")
+        } else {
+            User.findOne({
+                telephone: req.body.telephone
+            }, function (err, user) {
+                if (err) {
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+                } else if (!user) {
+                    res.status(401).json({
+                        "text": "L'utilisateur n'existe pas"
                     })
                 } else {
-                    res.status(401).json({
-                        "text": "Mot de passe incorrect"
-                    })
+                    if (user.authenticate(req.body.password)) {
+                        res.status(200).json({
+                            "token": user.getToken(),
+                            "text": "Authentification réussi",
+                            "id":user._id,
+                        })
+                    } else {
+                        res.status(401).json({
+                            "text": "Mot de passe incorrect"
+                        })
+                    }
                 }
-            }
-        })
-    }
+            })
+        }
+        
+     
+      
+      
+  }else{
+      try{
+          let user = jwt.verify(token, process.env.TOKEN_SECRET)
+          res.status(200).json(user)
+      }catch(e){
+          res.status(403).json("token invalide")
+      }
+     
+  }
+  
+   
 }
 
 function update(req,res){
 
    
-    if (!req.body.email) {
-        //Le cas où l'email ou bien le password ne serait pas soumit ou nul
+    if (!req.body.telephone) {
+        //Le cas où le numéro ou bien le password ne serait pas soumit ou nul
         res.status(400).json({
             "text": "Requête invalide"
         })
     } else {
         var user = {
-            email: req.body.email,
+            telephone: req.body.telephone,
             password: req.body.password,//passwordHash.generate(req.body.password),
             passwordgetaccept:req.body.passwordgetaccept, 
-            prenom:req.body.prenom
+            ville:req.body.ville
         }
 
        
@@ -178,7 +205,7 @@ function update(req,res){
                     break;
                 case 204:
                     res.status(204).json({
-                        "text": "L'adresse email existe déjà"
+                        "text": "Le numéro existe déjà"
                     })
                     break;
                 default:
