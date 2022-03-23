@@ -7,21 +7,21 @@ var router = express.Router();
 const mongoose = require("mongoose");
 const fs = require('fs');
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 4000
 
 
-
+/*
 mongoose.connect(config.CURRENT_BD_PATH).then(() => {
   console.log('Connected to mongoDB')
 }).catch(e => {
   console.log('Error while DB connecting');
   console.log(e);
-});
+});*/
 
   //Définition des CORS
 app.use(function (req, res, next) {
   res.setHeader('Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Credentials', true);

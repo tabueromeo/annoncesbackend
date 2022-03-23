@@ -9,6 +9,11 @@ dotenv.config();
 
 
 function signup(req, res) {
+    let {ville,telephone,age} = req.body
+    let token = jwt.sign({ville,telephone,age}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+    res.status(200).json(token)
+        
+    return
     if (!req.body.telephone || !req.body.password) {
         //Le cas où l'email ou bien le password ne serait pas soumit ou nul
         res.status(400).json({
@@ -73,13 +78,15 @@ function signup(req, res) {
 }
 
 function login(req, res) {
+    console.log(req.headers)
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1]
+    console.log(authHeader)
+    console.log(token)
     
   
-     const authHeader = req.headers['authorization']
-     const token = authHeader && authHeader.split(' ')[1]
-  
-  if (token == null) {
-      
+  if (token === undefined) {
+    return
            if (!req.body.telephone || !req.body.password) {
              return res.status(401).json("requete invalide")
         } else {
@@ -115,8 +122,9 @@ function login(req, res) {
       
   }else{
       try{
-          let user = jwt.verify(token, process.env.TOKEN_SECRET)
-          res.status(200).json(user)
+          let payload = jwt.verify(token, process.env.TOKEN_SECRET)
+          console.log(payload)
+          res.status(200).json(payload)
       }catch(e){
           res.status(403).json("token invalide")
       }
