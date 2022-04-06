@@ -10,10 +10,10 @@ dotenv.config();
 
 function signup(req, res) {
     let {ville,telephone,age} = req.body
-    let token = jwt.sign({ville,telephone,age}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
-    res.status(200).json(token)
+   // let token = jwt.sign({ville,telephone,age}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+   // res.status(200).json(token)
         
-    return
+   // return
     if (!req.body.telephone || !req.body.password) {
         //Le cas où l'email ou bien le password ne serait pas soumit ou nul
         res.status(400).json({
@@ -48,7 +48,7 @@ function signup(req, res) {
                         "text": "Erreur interne"
                     })
                 } else {
-                   let token = jwt.sign({"telephone":user.telephone,"_id":user._id}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
+                   let token = jwt.sign({"telephone":user.telephone,"_id":user._id,"ville":user.ville,"age":user.age}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
                     
                     res.status(200).json({
                         "text": "Succès",
@@ -86,7 +86,7 @@ function login(req, res) {
     
   
   if (token === undefined) {
-    return
+   // return
            if (!req.body.telephone || !req.body.password) {
              return res.status(401).json("requete invalide")
         } else {
@@ -102,9 +102,10 @@ function login(req, res) {
                         "text": "L'utilisateur n'existe pas"
                     })
                 } else {
-                    if (user.authenticate(req.body.password)) {
+                    if (passwordHash.generate(req.body.password)===user.password) {
+                        let token = jwt.sign({"telephone":user.telephone,"_id":user._id,"ville":user.ville,"age":user.age}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
                         res.status(200).json({
-                            "token": user.getToken(),
+                            "token":token,
                             "text": "Authentification réussi",
                             "id":user._id,
                         })
