@@ -25,12 +25,15 @@ function addannonce(req, res) {
      
     } else {
         console.log(user)
-        donnee["telephone"] = user.telephone;
+        donnee={
+            ...donnee,
+            telephone:user.telephone,
+        }
     }
 })
 
 
-console.log(donnee)
+console.log("donnée",donnee)
 
   
   var _annonce = new DaoAnnonces(donnee);
