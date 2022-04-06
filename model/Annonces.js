@@ -45,7 +45,7 @@ function showAllAnnonce(req,res){
 
     findAnnonce.then(function (result) {
 
-        console.log(result);
+      //  console.log(result);
         res.send(result)
     }, function (error) {
 

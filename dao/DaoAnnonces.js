@@ -8,6 +8,7 @@ var annoncesSchema = new mongoose.Schema({
     description : String,
     images : String,
     iduser:String,
+    telephone:String,
     date : { type : Date, default : Date.now },
   });
 

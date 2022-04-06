@@ -82,13 +82,22 @@ function login(req, res) {
     console.log(req.headers)
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-    console.log(authHeader)
-    console.log(token)
+   const tokenExpire = false;
     
   
-  if (token === undefined) {
-   // return
-           if (!req.body.telephone || !req.body.password) {
+  if (token !== undefined)
+  {
+    try{
+        let payload = jwt.verify(token, process.env.TOKEN_SECRET)
+        res.status(200).json(payload)
+        return;
+    }catch(e){
+        tokenExpire = true;
+        console.log("token expiré")
+    }
+}
+ 
+if (!req.body.telephone || !req.body.password) {
              return res.status(401).json("requete invalide")
         } else {
             User.findOne({
@@ -109,6 +118,7 @@ function login(req, res) {
                             "token":token,
                             "text": "Authentification réussi",
                             "id":user._id,
+                            "telephone":user.telephone,
                         })
                     } else {
                         res.status(401).json({
@@ -122,16 +132,9 @@ function login(req, res) {
      
       
       
-  }else{
-      try{
-          let payload = jwt.verify(token, process.env.TOKEN_SECRET)
-          console.log(payload)
-          res.status(200).json(payload)
-      }catch(e){
-          res.status(403).json("token invalide")
-      }
+  
      
-  }
+  
   
    
 }
