@@ -24,34 +24,34 @@ function addannonce(req, res) {
         console.log("L'utilisateur n'existe pas")
      
     } else {
-        console.log(user)
+       
         donnee={
             ...donnee,
             telephone:user.telephone,
         }
+
+                var _annonce = new DaoAnnonces(donnee);
+        _annonce.save(function (err, donnee) {
+            if (err) {
+
+                res.status(500).json({
+                    "msg": "Erreur sauvegarde bd"
+                })
+
+            } else {
+                console.log("entréeee dans ajout des  ok")
+
+                res.status(200).json({
+                    "msg": "Succès"
+                })
+            }
+        })
+  
+
     }
 })
 
 
-console.log("donnée",donnee)
-
-  
-  var _annonce = new DaoAnnonces(donnee);
-  _annonce.save(function (err, donnee) {
-      if (err) {
-
-          res.status(500).json({
-              "msg": "Erreur sauvegarde bd"
-          })
-
-      } else {
-        console.log("entréeee dans ajout des  ok")
-
-          res.status(200).json({
-              "msg": "Succès"
-          })
-      }
-  })
   
 }
 
