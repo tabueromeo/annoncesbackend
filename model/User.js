@@ -239,3 +239,4 @@ function update(req,res){
 
 exports.login = login;
 exports.signup = signup;
+exports.logintoken = logintoken;
