@@ -53,6 +53,7 @@ function signup(req, res) {
                     res.status(200).json({
                         "text": "Succès",
                         "token": token,
+                        "iduser":user._id,
                     })
                 }
             })
