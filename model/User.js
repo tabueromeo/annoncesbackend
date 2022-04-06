@@ -78,7 +78,7 @@ function signup(req, res) {
     }
 }
 
-function login(req, res) {
+function logintoken(req, res) {
     console.log(req.headers)
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
@@ -96,6 +96,10 @@ function login(req, res) {
         console.log("token expiré")
     }
 }
+}
+
+function login(req, res) {
+ 
  
 if (!req.body.telephone || !req.body.password) {
              return res.status(401).json("requete invalide")
@@ -131,9 +135,7 @@ if (!req.body.telephone || !req.body.password) {
      
       
       
-  
-     
-  
+
   
    
 }
