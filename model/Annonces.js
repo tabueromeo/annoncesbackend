@@ -24,12 +24,13 @@ function addannonce(req, res) {
         console.log("L'utilisateur n'existe pas")
      
     } else {
+        console.log(user)
         donnee["telephone"] = user.telephone;
     }
 })
 
 
-
+console.log(donnee)
 
   
   var _annonce = new DaoAnnonces(donnee);
