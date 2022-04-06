@@ -116,7 +116,7 @@ if (!req.body.telephone || !req.body.password) {
                         "text": "L'utilisateur n'existe pas"
                     })
                 } else {
-                    console.log("pass arrivé",req.body.password)
+                    console.log("pass arrivé",passwordHash.generate(req.body.password))
                     console.log("pass existant",user.password)
 
                     if (passwordHash.generate(req.body.password)===user.password) {
