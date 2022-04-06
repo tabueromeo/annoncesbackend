@@ -1,4 +1,5 @@
 const DaoAnnonces = require('../dao/DaoAnnonces');
+const User = require('../dao/DaoUser');
 const config = require('./../config/config');
 const mongoose = require("mongoose");
 
@@ -8,6 +9,27 @@ function addannonce(req, res) {
    var datecurent = new Date();
 
   let donnee = req.body;
+
+
+  // recherche de l'utilisateur qui enregistre une annonce
+  User.findById(
+                
+    new mongoose.Types.ObjectId(req.body.iduser)
+
+, function (err, result) {
+    if (err) {
+        console.log(err)
+    } else {
+      
+      resolve(result)
+      console.log("result",result)
+      donnee["telephone"] = result.telephone;
+    }
+})
+
+
+
+  
   var _annonce = new DaoAnnonces(donnee);
   _annonce.save(function (err, donnee) {
       if (err) {
