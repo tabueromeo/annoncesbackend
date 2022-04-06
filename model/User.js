@@ -116,6 +116,9 @@ if (!req.body.telephone || !req.body.password) {
                         "text": "L'utilisateur n'existe pas"
                     })
                 } else {
+                    console.log("pass arrivé",req.body.password)
+                    console.log("pass existant",user.password)
+
                     if (passwordHash.generate(req.body.password)===user.password) {
                         let token = jwt.sign({"telephone":user.telephone,"_id":user._id,"ville":user.ville,"age":user.age}, process.env.TOKEN_SECRET, { expiresIn: '1800s' });
                         res.status(200).json({
