@@ -82,7 +82,7 @@ function login(req, res) {
     console.log(req.headers)
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
-   const tokenExpire = false;
+    
     
   
   if (token !== undefined)
@@ -92,7 +92,7 @@ function login(req, res) {
         res.status(200).json(payload)
         return;
     }catch(e){
-        tokenExpire = true;
+       
         console.log("token expiré")
     }
 }
