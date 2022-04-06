@@ -12,20 +12,22 @@ function addannonce(req, res) {
 
 
   // recherche de l'utilisateur qui enregistre une annonce
-  User.findById(
-                
-    new mongoose.Types.ObjectId(req.body.iduser)
-
-, function (err, result) {
+  User.findById({
+  _id:  new mongoose.Types.ObjectId(req.body.iduser)
+}, function (err, user) {
     if (err) {
-        console.log(err)
+       
+        console.log("Erreur interne")
+    
+    } else if (!user) {
+        
+        console.log("L'utilisateur n'existe pas")
+     
     } else {
-      
-      resolve(result)
-      console.log("result",result)
-      donnee["telephone"] = result.telephone;
+        donnee["telephone"] = user.telephone;
     }
 })
+
 
 
 
