@@ -93,7 +93,7 @@ function logintoken(req, res) {
         return;
     }catch(e){
        
-        console.log("token expiré")
+        res.status(401).json("token expiré")
     }
 }
 }
