@@ -185,15 +185,14 @@ function updateAnnonce(req,res){
 
   //  console.log(req.body)
     let donnee = req.body;
-    donnee["images"] = req.body.images.split(',');
+  //  donnee["images"] = req.body.images.split(',');
    // console.log(req.body.images.split(','))
   
 
 
-    DaoAnnonces.findByIdAndUpdate( new mongoose.Types.ObjectId(req.body.id),donnee,function (err, user) {
+    DaoAnnonces.findByIdAndUpdate( new mongoose.Types.ObjectId(req.body._id),donnee,function (err, user) {
 
-        console.log("----------------------------------entréeeeee");
-        console.log(req.body.id);
+      
         if (err) {
             res.status(500).json({
                 "text": "Erreur interne"
