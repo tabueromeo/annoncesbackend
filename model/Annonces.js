@@ -100,21 +100,18 @@ function showAllAnnonce(req,res){
 
 function showByCriteriaAnnonce(req, res) {
   
-  if (!req.query.ville || !req.query.type) {
+  if (!req.query.iduser) {
 
       res.status(400).json({
           "text": "Requête invalide"
       })
   } else {
-      var logement = {
-          ville:  req.query.ville,
-          type: req.query.type
-      }
+   
       var findannonce = new Promise(function (resolve, reject) {
 
          
         DaoAnnonces.find({
-              type: "appartement"
+            iduser:  req.query.iduser
           }, function (err, result) {
               if (err) {
                   reject(500);
@@ -138,7 +135,7 @@ function showByCriteriaAnnonce(req, res) {
                   break;
               case 204:
                   res.status(204).json({
-                      "text": "L'adresse email existe déjà"
+                      "text": "Aucune annonce ne correpond"
                   })
                   break;
               default:
