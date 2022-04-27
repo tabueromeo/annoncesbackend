@@ -28,6 +28,7 @@ function addannonce(req, res) {
         donnee={
             ...donnee,
             telephone:user.telephone,
+            ville:user.ville,
         }
 
                 var _annonce = new DaoAnnonces(donnee);
@@ -96,22 +97,23 @@ function showAllAnnonce(req,res){
     })
 
 }
-
-
 function showByCriteriaAnnonce(req, res) {
   
-  if (!req.query.iduser) {
+
+    
+
+  if (!req.query.category && !req.query.ville) {
 
       res.status(400).json({
           "text": "Requête invalide"
       })
-  } else {
-   
+  } else if(req.query.category) {
+    console.log(req.query)
       var findannonce = new Promise(function (resolve, reject) {
 
          
         DaoAnnonces.find({
-            iduser:  req.query.iduser
+            category:  req.query.category
           }, function (err, result) {
               if (err) {
                   reject(500);
@@ -123,7 +125,7 @@ function showByCriteriaAnnonce(req, res) {
       })
 
       findannonce.then(function (result) {
-            console.log("show-by-criterie",result,":----------------------show by criteria end")
+            
           res.send(result)
       }, function (error) {
 
@@ -144,8 +146,99 @@ function showByCriteriaAnnonce(req, res) {
                   })
           }
       })
-  }
+  }else if(req.query.ville) {
+    console.log(req.query)
+    var findannonce = new Promise(function (resolve, reject) {
+
+       
+      DaoAnnonces.find({
+          ville:  req.query.ville
+        }, function (err, result) {
+            if (err) {
+                reject(500);
+            } else {
+              
+              resolve(result)
+            }
+        })
+    })
+
+    findannonce.then(function (result) {
+          
+        res.send(result)
+    }, function (error) {
+
+        switch (error) {
+            case 500:
+                res.status(500).json({
+                    "text": "Erreur interne"
+                })
+                break;
+            case 204:
+                res.status(204).json({
+                    "text": "Aucune annonce ne correpond"
+                })
+                break;
+            default:
+                res.status(500).json({
+                    "text": "Erreur interne"
+                })
+        }
+    })
 }
+}
+
+function showByUserIdAnnonce(req, res) {
+  
+    if (!req.query.iduser) {
+  
+        res.status(400).json({
+            "text": "Requête invalide"
+        })
+    } else {
+     
+        var findannonce = new Promise(function (resolve, reject) {
+  
+           
+          DaoAnnonces.find({
+              iduser:  req.query.iduser
+            }, function (err, result) {
+                if (err) {
+                    reject(500);
+                } else {
+                  
+                  resolve(result)
+                }
+            })
+        })
+  
+        findannonce.then(function (result) {
+            
+            res.send(result)
+        }, function (error) {
+  
+            switch (error) {
+                case 500:
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+                    break;
+                case 204:
+                    res.status(204).json({
+                        "text": "Aucune annonce ne correpond"
+                    })
+                    break;
+                default:
+                    res.status(500).json({
+                        "text": "Erreur interne"
+                    })
+            }
+        })
+    }
+  }
+  
+
+
 
 function deleteannonce(req,res){
 
@@ -270,4 +363,5 @@ exports.showAllAnnonce = showAllAnnonce;
 exports.showOneAnnonce = showOneAnnonce;
 exports.updateAnnonce=updateAnnonce;
 exports.showByCriteriaAnnonce = showByCriteriaAnnonce;
+exports.showByUserIdAnnonce = showByUserIdAnnonce;
 exports.deleteannonce = deleteannonce;

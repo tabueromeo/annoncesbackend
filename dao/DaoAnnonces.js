@@ -9,6 +9,7 @@ var annoncesSchema = new mongoose.Schema({
     images : String,
     iduser:String,
     telephone:String,
+    ville:String,
     date : { type : Date, default : Date.now },
   });
 

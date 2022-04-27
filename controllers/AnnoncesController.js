@@ -5,7 +5,8 @@ module.exports = function (app) {
     app.post('/addannonce',annonce.addannonce);
     app.get('/readannonce',annonce.showAllAnnonce);
     app.get('/one',annonce.showOneAnnonce)
-    app.get('/showbyiduser',annonce.showByCriteriaAnnonce)
+    app.get('/showbyiduser',annonce.showByUserIdAnnonce)
+    app.get('/showbycriteria',annonce.showByCriteriaAnnonce) 
     app.post('/update',annonce.updateAnnonce)
     app.post('/deleteannonce',annonce.deleteannonce)
 }
