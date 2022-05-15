@@ -76,8 +76,8 @@ https
 		// Provide the private and public key to the server by reading each
 		// file's content with the readFileSync() method.
     {
-      key: fs.readFileSync("server.key"),
-      cert: fs.readFileSync("server.cert"),
+      key: fs.readFileSync("/etc/letsencrypt/keys/0001_key-certbot.pem"),
+      csr: fs.readFileSync("/etc/letsencrypt/csr/0001_csr-certbot.pem"),
     },
     app
   )
