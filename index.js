@@ -70,7 +70,7 @@ require('./controllers/userController')(router);
 
 
 
-
+/*
 https
   .createServer(
 		// Provide the private and public key to the server by reading each
@@ -83,6 +83,6 @@ https
   )
   .listen(PORT, () => {
     console.log("serever is runing at port 4000");
-  });
+  });*/
 
-//app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
