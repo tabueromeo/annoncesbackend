@@ -5,6 +5,7 @@ const app = express();
 var bodyParser = require('body-parser');
 var router = express.Router();
 const mongoose = require("mongoose");
+const https = require("https");
 const fs = require('fs');
 
 const PORT = process.env.PORT || 4000
@@ -70,4 +71,18 @@ require('./controllers/userController')(router);
 
 
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+https
+  .createServer(
+		// Provide the private and public key to the server by reading each
+		// file's content with the readFileSync() method.
+    {
+      key: fs.readFileSync("key.pem"),
+      cert: fs.readFileSync("cert.pem"),
+    },
+    app
+  )
+  .listen(PORT, () => {
+    console.log("serever is runing at port 4000");
+  });
+
+//app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
