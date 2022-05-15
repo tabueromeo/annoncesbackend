@@ -8,7 +8,7 @@ const mongoose = require("mongoose");
 const https = require("https");
 const fs = require('fs');
 
-const PORT = process.env.PORT || 443
+const PORT = process.env.PORT || 4000
 
 /*
 
@@ -76,8 +76,8 @@ https
 		// Provide the private and public key to the server by reading each
 		// file's content with the readFileSync() method.
     {
-      key: fs.readFileSync("key.pem"),
-      cert: fs.readFileSync("cert.pem"),
+      key: fs.readFileSync("server.pem"),
+      cert: fs.readFileSync("server.pem"),
     },
     app
   )
