@@ -77,7 +77,7 @@ https
 		// file's content with the readFileSync() method.
     {
       key: fs.readFileSync("server.key"),
-      cert: fs.readFileSync("server.pem"),
+      cert: fs.readFileSync("server.cert"),
     },
     app
   )
