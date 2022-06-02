@@ -83,6 +83,15 @@ https
   )
   .listen(PORT, () => {
     console.log("serever is runing at port 4000");
-  });*/
+  });
+*/
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/privkey.pem"),
+         cert: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/fullchain.pem"),
+         ca: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/chain.pem")
+ };
+ 
+ https.createServer(options,app).listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+
+//app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
