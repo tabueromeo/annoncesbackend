@@ -10,7 +10,6 @@ const fs = require('fs');
 
 const PORT = process.env.PORT || 4000
 
-/*
 
 mongoose.connect("mongodb+srv://lovons:lovons@lovons.jwtjz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
   useNewUrlParser: true,
@@ -22,16 +21,16 @@ mongoose.connect("mongodb+srv://lovons:lovons@lovons.jwtjz.mongodb.net/myFirstDa
   console.log('Error while DB connecting');
   console.log(e);
 });
-*/
 
 
+/*
 mongoose.connect(config.CURRENT_BD_PATH).then(() => {
   console.log('Connected to mongoDB')
 }).catch(e => {
   console.log('Error while DB connecting');
   console.log(e);
 });
-
+*/
   //Définition des CORS
 app.use(function (req, res, next) {
   res.setHeader('Allow-Origin', '*');
@@ -66,25 +65,7 @@ require('./controllers/PrivilegeController')(router);
 
 app.use('/user', router);
 require('./controllers/userController')(router);
-
-
-
-
 /*
-https
-  .createServer(
-		// Provide the private and public key to the server by reading each
-		// file's content with the readFileSync() method.
-    {
-      key: fs.readFileSync("/etc/letsencrypt/keys/0001_key-certbot.pem"),
-      csr: fs.readFileSync("/etc/letsencrypt/csr/0001_csr-certbot.pem"),
-    },
-    app
-  )
-  .listen(PORT, () => {
-    console.log("serever is runing at port 4000");
-  });
-*/
 const options = {
   key: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/privkey.pem"),
          cert: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/fullchain.pem"),
@@ -92,6 +73,6 @@ const options = {
  };
  
  https.createServer(options,app).listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
+*/
 
-
-//app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`))

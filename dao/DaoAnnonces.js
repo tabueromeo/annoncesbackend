@@ -10,6 +10,13 @@ var annoncesSchema = new mongoose.Schema({
     iduser:String,
     telephone:String,
     ville:String,
+    statut:{type: String, default : "En attente" },
+    nbervue:{type: String, default : "0" },
+    nbervuetel:{type: String, default : "0" },
+    //quartier:String,
+    cherche:String,
+    reference:String,
+    //expireddate:{ type : Date, default : Date.now +7 },
     date : { type : Date, default : Date.now },
   });
 

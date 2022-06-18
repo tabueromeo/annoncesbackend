@@ -12,6 +12,8 @@ var userSchema = mongoose.Schema({
 		required: true
 	},
 	ville:String,
+	genre:String,
+	typeuser:String,
 	age:String,
 	password: {
         type: String,

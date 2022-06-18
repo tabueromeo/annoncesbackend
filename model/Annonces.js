@@ -5,11 +5,12 @@ const mongoose = require("mongoose");
 
 function addannonce(req, res) {
 
-   
+   console.log("entrée annonce model")
    var datecurent = new Date();
-
   let donnee = req.body;
-
+  donnee["reference"] = "LVS"+(datecurent.getFullYear()+ datecurent.getMonth()+datecurent.getDay()+datecurent.getHours()+datecurent.getMinutes()+datecurent.getSeconds())+donnee.iduser.substring(donnee.iduser.length-4,donnee.iduser.length)
+ 
+console.log(donnee)
 
   // recherche de l'utilisateur qui enregistre une annonce
   User.findById({
@@ -34,7 +35,7 @@ function addannonce(req, res) {
                 var _annonce = new DaoAnnonces(donnee);
         _annonce.save(function (err, donnee) {
             if (err) {
-
+                console.log(err)
                 res.status(500).json({
                     "msg": "Erreur sauvegarde bd"
                 })
@@ -284,6 +285,7 @@ function updateAnnonce(req,res){
 
       
         if (err) {
+            console.log(err)
             res.status(500).json({
                 "text": "Erreur interne"
             })
@@ -298,6 +300,8 @@ function updateAnnonce(req,res){
 
 
 }
+
+
 function showOneAnnonce(req, res) {
   
 
