@@ -65,7 +65,7 @@ require('./controllers/PrivilegeController')(router);
 
 app.use('/user', router);
 require('./controllers/userController')(router);
-/*
+
 const options = {
   key: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/privkey.pem"),
          cert: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/fullchain.pem"),
@@ -73,6 +73,7 @@ const options = {
  };
  
  https.createServer(options,app).listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
-*/
 
+/*
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+*/
