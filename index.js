@@ -10,26 +10,30 @@ const fs = require('fs');
 
 const PORT = process.env.PORT || 4000
 
-/*
-mongoose.connect("mongodb+srv://lovons:lovons@lovons.jwtjz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
-  useNewUrlParser: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('Connected to mongoDB')
-}).catch(e => {
-  console.log('Error while DB connecting');
-  console.log(e);
-});*/
+if(config.statusDev=="dev"){
+  mongoose.connect("mongodb+srv://lovons:lovons@lovons.jwtjz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", {
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+  }).then(() => {
+    console.log('Connected to mongoDB')
+  }).catch(e => {
+    console.log('Error while DB connecting');
+    console.log(e);
+  });
+}else{
+  mongoose.connect(config.CURRENT_BD_PATH).then(() => {
+    console.log('Connected to mongoDB')
+  }).catch(e => {
+    console.log('Error while DB connecting');
+    console.log(e);
+  });
+}
 
 
 
-mongoose.connect(config.CURRENT_BD_PATH).then(() => {
-  console.log('Connected to mongoDB')
-}).catch(e => {
-  console.log('Error while DB connecting');
-  console.log(e);
-});
+
+
 
   //Définition des CORS
 app.use(function (req, res, next) {
@@ -66,14 +70,18 @@ require('./controllers/PrivilegeController')(router);
 app.use('/user', router);
 require('./controllers/userController')(router);
 
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/privkey.pem"),
-         cert: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/fullchain.pem"),
-         ca: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/chain.pem")
- };
- 
- https.createServer(options,app).listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
+if(config.statusDev=="dev"){
+  app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+}else{
+  const options = {
+    key: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/privkey.pem"),
+           cert: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/fullchain.pem"),
+           ca: fs.readFileSync("/etc/letsencrypt/live/back.lovons.com/chain.pem")
+   };
+   
+   https.createServer(options,app).listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
+  
+}
 
-/*
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
-*/
+
+

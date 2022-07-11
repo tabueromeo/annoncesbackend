@@ -125,6 +125,7 @@ if (!req.body.telephone || !req.body.password) {
                             "token":token,
                             "text": "Authentification réussi",
                             "id":user._id,
+                            "typeuser":user.typeuser
                         })
                     } else {
                         res.status(401).json({

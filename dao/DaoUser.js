@@ -13,7 +13,7 @@ var userSchema = mongoose.Schema({
 	},
 	ville:String,
 	genre:String,
-	typeuser:String,
+	typeuser:{type: String, default : "client" },
 	age:String,
 	password: {
         type: String,
