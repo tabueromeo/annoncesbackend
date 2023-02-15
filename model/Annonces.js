@@ -76,7 +76,7 @@ function showAllAnnonce(req,res){
     findAnnonce.then(function (result) {
 
       //  console.log(result);
-        res.send(result)
+        res.send(result.reverse())
     }, function (error) {
 
         switch (error) {
