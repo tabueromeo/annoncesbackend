@@ -32,7 +32,6 @@ function addannonce(req, res) {
 				donnee = {
 					...donnee,
 					telephone: user.telephone,
-					ville: user.ville,
 				};
 
 				var _annonce = new DaoAnnonces(donnee);
