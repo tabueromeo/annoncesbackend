@@ -1,0 +1,4 @@
+TOKEN_SECRET=<la cle secrete pour générer le token avec jwt>
+BD_URL = <url complet de connexion au cluster mongodb atlas>
+CURRENT_BD_PATH=<cas de test bd en local mettre url pour acces en bd>
+STATUS_DEV=<dev si utilise la bd en local et prod si bd sur cluster>
