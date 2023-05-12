@@ -1,7 +1,7 @@
 {
-  "name": "node-js-getting-started",
+  "name": "lovons",
   "version": "0.3.0",
-  "description": "A sample Node.js app using Express 4",
+  "description": "Site de petite annonce de rencontre",
   "engines": {
     "node": "18.x"
   },
