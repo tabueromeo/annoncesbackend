@@ -10,6 +10,7 @@ bin-release/
 /node_modules
 /.pnp
 .pnp.js
+.env
 
 # Executables
 *.swf
